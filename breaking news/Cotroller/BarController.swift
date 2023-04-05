@@ -22,7 +22,7 @@ class BarController: UITabBarController {
         navController.navigationBar.prefersLargeTitles = true
 //        navController.navigationBar.topAnchor = view.topAnchor
         
-        navController.navigationBar.backgroundColor = .white
+//        navController.navigationBar.backgroundColor = .white
         viewController.navigationItem.title = title
         return navController
     }

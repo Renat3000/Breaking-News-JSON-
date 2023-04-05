@@ -9,51 +9,71 @@ import UIKit
 
 class SearchResultCell: UICollectionViewCell {
     
+    let eyeIcon: UILabel = {
+        let label = UILabel()
+        label.text = "👀"
+        return label
+    }()
+    
     let viewCount: UILabel = {
         let count = UILabel()
-        count.text = "12314"
+        count.text = "123"
+        count.numberOfLines = 1
+        count.widthAnchor.constraint(equalToConstant: 29).isActive = true
         return count
     }()
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .white
-//        iv.widthAnchor.constraint(equalToConstant: 100).isActive = true
-//        iv.heightAnchor.constraint(equalToConstant: 100).isActive = true
+//        iv.backgroundColor = .white
+//        iv.widthAnchor.constraint(equalToConstant: 50).isActive = true
+//        iv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        //норм
+//        iv.contentMode = UIView.ContentMode.scaleAspectFit
+        iv.contentMode = UIView.ContentMode.scaleAspectFill
+//        iv.contentMode = UIView.ContentMode.center
+        iv.clipsToBounds = true
         return iv
     }()
     
     let headlineLabel: UILabel = {
        let label = UILabel()
         label.text = "Breaking News"
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        label.numberOfLines = 0
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+//        label.sizeToFit()
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        backgroundColor = .blue
+        let viewCountView = UIStackView(arrangedSubviews: [
+            eyeIcon, viewCount
+        ])
+        viewCountView.axis = .vertical
         
         let labelStackView = UIStackView(arrangedSubviews: [
-            viewCount, headlineLabel
+            viewCountView, headlineLabel
         ])
-        labelStackView.spacing = 5
+        
+        labelStackView.spacing = 10
 //        stackview.alignment = .fill
         addSubview(labelStackView)
         
         let verticalStackView = UIStackView(arrangedSubviews: [
             labelStackView, imageView
         ])
-        
+//        imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         verticalStackView.axis = .vertical
         verticalStackView.spacing = 12
-//        verticalstackview.alignment = .center
         addSubview(verticalStackView)
         
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         verticalStackView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
+        verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
+        verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
         verticalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
     
