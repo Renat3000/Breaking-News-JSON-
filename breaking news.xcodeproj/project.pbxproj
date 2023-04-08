@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE2BC79529E1CA3A003F36DB /* BreakingNewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2BC79429E1CA3A003F36DB /* BreakingNewsController.swift */; };
 		CE46BB5A29DC61E20085E8E9 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46BB5929DC61E20085E8E9 /* SearchResult.swift */; };
 		CE92DE0729DB1B9000CE7D53 /* BarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE92DE0629DB1B9000CE7D53 /* BarController.swift */; };
 		CE92DE0A29DB292B00CE7D53 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE92DE0929DB292B00CE7D53 /* SearchResultCell.swift */; };
@@ -14,10 +15,11 @@
 		CED260E629D976EF003F643D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED260E529D976EF003F643D /* SceneDelegate.swift */; };
 		CED260ED29D976F1003F643D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED260EC29D976F1003F643D /* Assets.xcassets */; };
 		CED260F029D976F1003F643D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CED260EE29D976F1003F643D /* LaunchScreen.storyboard */; };
-		CED7EE4429D9DD08001C1BA4 /* NewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED7EE4329D9DD08001C1BA4 /* NewsController.swift */; };
+		CED7EE4429D9DD08001C1BA4 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED7EE4329D9DD08001C1BA4 /* SearchController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE2BC79429E1CA3A003F36DB /* BreakingNewsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakingNewsController.swift; sourceTree = "<group>"; };
 		CE46BB5929DC61E20085E8E9 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		CE92DE0629DB1B9000CE7D53 /* BarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarController.swift; sourceTree = "<group>"; };
 		CE92DE0929DB292B00CE7D53 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -27,7 +29,7 @@
 		CED260EC29D976F1003F643D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CED260EF29D976F1003F643D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CED260F129D976F1003F643D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CED7EE4329D9DD08001C1BA4 /* NewsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsController.swift; sourceTree = "<group>"; };
+		CED7EE4329D9DD08001C1BA4 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +55,8 @@
 			isa = PBXGroup;
 			children = (
 				CE92DE0629DB1B9000CE7D53 /* BarController.swift */,
-				CED7EE4329D9DD08001C1BA4 /* NewsController.swift */,
+				CED7EE4329D9DD08001C1BA4 /* SearchController.swift */,
+				CE2BC79429E1CA3A003F36DB /* BreakingNewsController.swift */,
 			);
 			path = Cotroller;
 			sourceTree = "<group>";
@@ -167,11 +170,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CED7EE4429D9DD08001C1BA4 /* NewsController.swift in Sources */,
+				CED7EE4429D9DD08001C1BA4 /* SearchController.swift in Sources */,
 				CED260E429D976EF003F643D /* AppDelegate.swift in Sources */,
 				CED260E629D976EF003F643D /* SceneDelegate.swift in Sources */,
 				CE92DE0729DB1B9000CE7D53 /* BarController.swift in Sources */,
 				CE46BB5A29DC61E20085E8E9 /* SearchResult.swift in Sources */,
+				CE2BC79529E1CA3A003F36DB /* BreakingNewsController.swift in Sources */,
 				CE92DE0A29DB292B00CE7D53 /* SearchResultCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

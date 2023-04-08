@@ -8,19 +8,34 @@
 import UIKit
 
 private let reuseIdentifier = "Cell"
-class NewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+class SearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
+fileprivate let searchController = UISearchController(searchResultsController: nil)
         override func viewDidLoad() {
             super.viewDidLoad()
             collectionView.backgroundColor = .systemGreen
             collectionView!.register(SearchResultCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-            fetchNews()
+            setupSearchBar()
+//            fetchNews()
         }
+    fileprivate func setupSearchBar(){
+        definesPresentationContext = true
+        navigationItem.searchController = self.searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
+//        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+    }
+    var timer: Timer?
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
+            self.fetchNews(searchTerm: searchText)
+        })
+    }
     
     fileprivate var appResults = [Articles]()
-    fileprivate func fetchNews(){
-        let urlString = "https://newsapi.org/v2/top-headlines?country=us&apiKey=7ecf375a7380407e9a2ba184b5f39a2f"
-        
+    fileprivate func fetchNews(searchTerm: String){
+        let urlString = "https://newsapi.org/v2/everything?q=\(searchTerm)&sortBy=popularity&apiKey=7ecf375a7380407e9a2ba184b5f39a2f"
+//        let urlString = "https://newsapi.org/v2/top-headlines?country=us&apiKey=7ecf375a7380407e9a2ba184b5f39a2f"
         guard let url = URL(string: urlString) else { return }
         
         // fetch data from internet

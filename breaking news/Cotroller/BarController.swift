@@ -13,7 +13,8 @@ class BarController: UITabBarController {
         super.viewDidLoad()
 
         viewControllers = [
-        createNavController(viewController: NewsController(), title: "NEWS")
+            createNavController(viewController: BreakingNewsController(), title: "Top News"),
+            createNavController(viewController: SearchController(), title: "Search")
         ]
     }
     
@@ -21,11 +22,18 @@ class BarController: UITabBarController {
         let navController = UINavigationController(rootViewController: viewController)
         navController.navigationBar.prefersLargeTitles = true
 //        navController.navigationBar.topAnchor = view.topAnchor
-        
 //        navController.navigationBar.backgroundColor = .white
         viewController.navigationItem.title = title
+        navController.tabBarItem.title = title
+        tabBar.isTranslucent = false
+        tabBar.backgroundColor = .systemGreen
+        
+        let appearance = UITabBarAppearance()
+        appearance.backgroundColor = .systemGreen
+        tabBar.standardAppearance = appearance
+        let itemAppearance = UITabBarItemAppearance()
+//        itemAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+//        itemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         return navController
     }
-
-
 }
