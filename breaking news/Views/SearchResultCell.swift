@@ -9,9 +9,9 @@ import UIKit
 
 class SearchResultCell: UICollectionViewCell {
     
-    let eyeIcon: UILabel = {
+    let clickIcon: UILabel = {
         let label = UILabel()
-        label.text = "👀"
+        label.text = "👆"
         return label
     }()
     
@@ -50,7 +50,7 @@ class SearchResultCell: UICollectionViewCell {
         super.init(frame: frame)
         
         let viewCountView = UIStackView(arrangedSubviews: [
-            eyeIcon, viewCount
+            clickIcon, viewCount
         ])
         viewCountView.axis = .vertical
         
@@ -60,10 +60,11 @@ class SearchResultCell: UICollectionViewCell {
         
         labelStackView.spacing = 10
 //        stackview.alignment = .fill
-        addSubview(labelStackView)
+//        addSubview(labelStackView)
         
         let verticalStackView = UIStackView(arrangedSubviews: [
-            labelStackView, imageView
+            imageView,
+            labelStackView
         ])
 //        imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         verticalStackView.axis = .vertical

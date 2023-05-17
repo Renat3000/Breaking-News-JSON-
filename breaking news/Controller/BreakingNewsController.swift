@@ -8,12 +8,36 @@
 import UIKit
 
 private let reuseIdentifier = "Cell"
-class BreakingNewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
-fileprivate let searchController = UISearchController(searchResultsController: nil)
+class BreakingNewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        let article = appResults[indexPath.item]
+        let controller = ArticleDetailController()
+//        controller.navigationItem.title = article.title
+//        controller.titleText = article.content ?? "no content"
+        controller.titleLabelText = article.title
+        controller.contentLabelText = article.content
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    //анимация загрузки (throbber)
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(style: .large)
+        aiv.color = .black
+        aiv.startAnimating()
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
+    
+//fileprivate let searchController = UISearchController(searchResultsController: nil)
         override func viewDidLoad() {
             super.viewDidLoad()
             collectionView.backgroundColor = .systemGreen
             collectionView!.register(SearchResultCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+            
+            view.addSubview(activityIndicatorView)
+            activityIndicatorView.fillSuperview()
             fetchNews()
         }
 
@@ -37,6 +61,7 @@ fileprivate let searchController = UISearchController(searchResultsController: n
 //                self.appResults.forEach({print($0.title)})
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
+                    self.activityIndicatorView.stopAnimating()
                 }
             } catch let jsonErr {
              print("Failed to decode JSON:", jsonErr)
@@ -55,10 +80,17 @@ fileprivate let searchController = UISearchController(searchResultsController: n
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
         let appResult = appResults[indexPath.item]
-        cell.headlineLabel.text = appResult.title
         if let url = URL(string: appResult.urlToImage ?? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg") {
             cell.imageView.load(url: url)
         }
+        cell.headlineLabel.text = appResult.title
+//        cell.horizontalController.didSelectHandler
+//        self.didSelectHandler = { [weak self] articles in
+//            let controller = ArticleDetailController()
+//            controller.navigationItem.title = articles.title
+////            controller.appId = articles.content
+//            self?.navigationController?.pushViewController(controller, animated: true)
+//        }
         return cell
     }
     
