@@ -24,13 +24,13 @@ class ArticleDetailController: UIViewController {
     
     var titleLabelText: String! {
         didSet {
-            print("here's my title text:", titleLabelText!)
+//            print("here's my title text:", titleLabelText!)
         }
     }
     
     var contentLabelText: String! {
         didSet {
-            print("here's my content text:", contentLabelText!)
+//            print("here's my content text:", contentLabelText!)
         }
     }
     

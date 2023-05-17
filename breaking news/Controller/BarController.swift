@@ -13,7 +13,7 @@ class BarController: UITabBarController {
         super.viewDidLoad()
 
         viewControllers = [
-            createNavController(viewController: BreakingNewsController(), title: "Top News"),
+            createNavController(viewController: BreakingNewsController(clickCount: 0), title: "Top News"),
             createNavController(viewController: SearchController(), title: "Search")
         ]
     }

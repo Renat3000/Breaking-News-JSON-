@@ -10,14 +10,34 @@ import UIKit
 private let reuseIdentifier = "Cell"
 class BreakingNewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var clickCount: Int
+    
+    func viewCountUpdate() -> Int {
+        
+        if clickCount == nil {
+            clickCount = 1
+        } else {
+            clickCount += 1
+        }
+        return clickCount ?? 0
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+        let number = viewCountUpdate()
+        print("number is", number)
+        clickCount = number
+        print("clickCount is", clickCount)
+//        viewCountUpdate()
+//        print(number)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
+//
+//        cell.clicks = number
+        
         let article = appResults[indexPath.item]
         let controller = ArticleDetailController()
-//        controller.navigationItem.title = article.title
-//        controller.titleText = article.content ?? "no content"
         controller.titleLabelText = article.title
         controller.contentLabelText = article.content
+        collectionView.reloadData()
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -84,6 +104,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
             cell.imageView.load(url: url)
         }
         cell.headlineLabel.text = appResult.title
+        cell.viewCount.text = "\(clickCount)"
 //        cell.horizontalController.didSelectHandler
 //        self.didSelectHandler = { [weak self] articles in
 //            let controller = ArticleDetailController()
@@ -95,10 +116,15 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     }
     
     //чтобы иницализировать легче
-        init() {
-            super.init(collectionViewLayout: UICollectionViewFlowLayout())
-        }
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
+    //        init() {
+    //
+    //        }
+    init(clickCount: Int) {
+        self.clickCount = clickCount
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+        
     }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

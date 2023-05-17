@@ -15,9 +15,9 @@ class SearchResultCell: UICollectionViewCell {
         return label
     }()
     
-    let viewCount: UILabel = {
+    let viewCount: UILabel! = {
         let count = UILabel()
-        count.text = "123"
+        count.text = "0"
         count.numberOfLines = 1
         count.widthAnchor.constraint(equalToConstant: 29).isActive = true
         return count
