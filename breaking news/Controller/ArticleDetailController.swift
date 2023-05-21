@@ -21,17 +21,38 @@ class ArticleDetailController: UIViewController {
     
     var titleLabel = UILabel(text: "Title", font: .boldSystemFont(ofSize: 22), numberOfLines: 0)
     var contentLabel = UILabel(text: "Content of News", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
-    
-    var titleLabelText: String! {
+    var urlLabel = UILabel(text: "full url", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
+    var imageView = UIImageView()
+    var imageViewURL = URL(string: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg")! {
         didSet {
-//            print("here's my title text:", titleLabelText!)
+            imageView.load(url: imageViewURL)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
+            imageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         }
     }
     
+    var sourceLabel = UILabel(text: "source", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
+    var dateLabel = UILabel(text: "date", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
+    var titleLabelText: String! {
+        didSet {}
+    }
+    
     var contentLabelText: String! {
-        didSet {
-//            print("here's my content text:", contentLabelText!)
-        }
+        didSet {}
+    }
+    
+    var urlLabelText: String! {
+        didSet {}
+    }
+    
+    var sourceLabelText: String! {
+        didSet {}
+    }
+    var dateLabelText: String! {
+        didSet {}
     }
     
     override func viewDidLoad() {
@@ -40,12 +61,23 @@ class ArticleDetailController: UIViewController {
         
         titleLabel.text = titleLabelText
         contentLabel.text = contentLabelText
-        
+        urlLabel.text = urlLabelText
+        sourceLabel.text = "Source: \(sourceLabelText!)"
+        dateLabel.text = dateLabelText
+
+        view.addSubview(imageView)
         view.addSubview(titleLabel)
+        view.addSubview(dateLabel)
         view.addSubview(contentLabel)
+        view.addSubview(sourceLabel)
+        view.addSubview(urlLabel)
         
-        titleLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 100, left: 20, bottom: 0, right: 20))
-        contentLabel.anchor(top: titleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
+//        imageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 100, left: 20, bottom: 0, right: 20))
+        titleLabel.anchor(top: imageView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 20))
+        dateLabel.anchor(top: titleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 20))
+        contentLabel.anchor(top: dateLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
+        sourceLabel.anchor(top: contentLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
+        urlLabel.anchor(top: sourceLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 5, left: 20, bottom: 0, right: 20))
         
 //        titleLabel.translatesAutoresizingMaskIntoConstraints = false
 ////        titleLabel.clipsToBounds = true

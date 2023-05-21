@@ -11,7 +11,7 @@ private let reuseIdentifier = "Cell"
 class BreakingNewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var clickCount: Int
-    
+    var wikiNoImage = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
     func viewCountUpdate() -> Int {
         
         if clickCount == nil {
@@ -24,9 +24,9 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let number = viewCountUpdate()
-        print("number is", number)
+//        print("number is", number)
         clickCount = number
-        print("clickCount is", clickCount)
+//        print("clickCount is", clickCount)
 //        viewCountUpdate()
 //        print(number)
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
@@ -36,7 +36,14 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         let article = appResults[indexPath.item]
         let controller = ArticleDetailController()
         controller.titleLabelText = article.title
-        controller.contentLabelText = article.content
+        controller.dateLabelText = article.publishedAt
+        controller.contentLabelText = article.description
+        controller.urlLabelText = article.url
+        controller.sourceLabelText = article.source.name
+        if let imageUrl = URL(string: article.urlToImage ?? wikiNoImage) {
+        controller.imageViewURL = imageUrl
+        }
+        
         collectionView.reloadData()
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -100,7 +107,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
         let appResult = appResults[indexPath.item]
-        if let url = URL(string: appResult.urlToImage ?? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg") {
+        if let url = URL(string: appResult.urlToImage ?? wikiNoImage) {
             cell.imageView.load(url: url)
         }
         cell.headlineLabel.text = appResult.title
