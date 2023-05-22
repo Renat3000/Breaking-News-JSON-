@@ -55,15 +55,26 @@ class ArticleDetailController: UIViewController {
         didSet {}
     }
     
+    //date format
+    func formattedDateTime(from dateString: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        if let date = dateFormatter.date(from: dateString) {
+            dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+            return dateFormatter.string(from: date)
+        }
+        return ""
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .yellow
+        view.backgroundColor = .white
         
         titleLabel.text = titleLabelText
         contentLabel.text = contentLabelText
         urlLabel.text = urlLabelText
         sourceLabel.text = "Source: \(sourceLabelText!)"
-        dateLabel.text = dateLabelText
+        dateLabel.text = formattedDateTime(from: dateLabelText)
 
         view.addSubview(imageView)
         view.addSubview(titleLabel)
