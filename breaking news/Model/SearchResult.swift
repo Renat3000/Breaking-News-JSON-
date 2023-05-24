@@ -21,6 +21,7 @@ struct Articles: Decodable {
     let source: Source
     let publishedAt: String?
     let description: String?
+//    var clickCount: Int?
 }
 
 struct Source: Decodable {

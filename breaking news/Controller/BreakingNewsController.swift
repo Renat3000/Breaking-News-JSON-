@@ -60,7 +60,8 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
 //fileprivate let searchController = UISearchController(searchResultsController: nil)
         override func viewDidLoad() {
             super.viewDidLoad()
-            collectionView.backgroundColor = .systemGreen
+//            collectionView.backgroundColor = .systemGreen
+            collectionView.backgroundColor = .white
             collectionView!.register(SearchResultCell.self, forCellWithReuseIdentifier: reuseIdentifier)
             
             view.addSubview(activityIndicatorView)

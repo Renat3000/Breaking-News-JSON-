@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ArticleDetailController: UIViewController {
     
@@ -66,9 +67,29 @@ class ArticleDetailController: UIViewController {
         return ""
     }
     
+    // кнопка на новость
+    var openInSafariButton = UIButton(type: .system) {
+        didSet {
+            openInSafariButton.translatesAutoresizingMaskIntoConstraints = false
+            openInSafariButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        }
+    }
+    //  функция нажатия кнопки
+    @objc private func SafariButtonPressed() {
+        let vc = SFSafariViewController(url: URL(string: urlLabelText)!)
+        present(vc, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
+        // кнопка
+      openInSafariButton.frame = CGRect(x: 0, y: 0, width: 100, height: 50) // задаём фрейм кнопки
+        openInSafariButton.backgroundColor = .systemBlue // фон кнопки
+        openInSafariButton.setTitleColor(.white, for: .normal) // цвет текста кнопки
+        openInSafariButton.setTitle("Full Story", for: .normal) // текст на кнопке
+        openInSafariButton.addTarget(self, action: #selector(SafariButtonPressed), for: .touchUpInside) // добавляем действие при нажатии кнопки
         
         titleLabel.text = titleLabelText
         contentLabel.text = contentLabelText
@@ -81,23 +102,15 @@ class ArticleDetailController: UIViewController {
         view.addSubview(dateLabel)
         view.addSubview(contentLabel)
         view.addSubview(sourceLabel)
-        view.addSubview(urlLabel)
+        view.addSubview(openInSafariButton)
         
-//        imageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 100, left: 20, bottom: 0, right: 20))
         titleLabel.anchor(top: imageView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 20))
         dateLabel.anchor(top: titleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 20))
         contentLabel.anchor(top: dateLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
         sourceLabel.anchor(top: contentLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
-        urlLabel.anchor(top: sourceLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 5, left: 20, bottom: 0, right: 20))
+        openInSafariButton.topAnchor.constraint(equalTo: sourceLabel.bottomAnchor).isActive = true
+        openInSafariButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        openInSafariButton.anchor(top: sourceLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 5, left: 20, bottom: 0, right: 20))
         
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-////        titleLabel.clipsToBounds = true
-//        NSLayoutConstraint.activate([
-////            titleLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: bottom, trailing: <#T##NSLayoutXAxisAnchor?#>)
-////            titleLabel.topAnchor
-//            titleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//            titleLabel.widthAnchor.constraint(equalToConstant: 400),
-////            titleLabel.heightAnchor.constraint(equalToConstant: 200)
-//        ])
     }
 }

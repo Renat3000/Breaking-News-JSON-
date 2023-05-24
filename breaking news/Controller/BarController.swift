@@ -25,11 +25,12 @@ class BarController: UITabBarController {
 //        navController.navigationBar.backgroundColor = .white
         viewController.navigationItem.title = title
         navController.tabBarItem.title = title
-        tabBar.isTranslucent = false
-        tabBar.backgroundColor = .systemGreen
+//        tabBar.isTranslucent = false
+//        tabBar.backgroundColor = .systemGreen
         
         let appearance = UITabBarAppearance()
-        appearance.backgroundColor = .systemGreen
+//        appearance.backgroundColor = .systemGreen
+        appearance.backgroundColor = .white
         tabBar.standardAppearance = appearance
         let itemAppearance = UITabBarItemAppearance()
 //        itemAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
