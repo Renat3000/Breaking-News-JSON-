@@ -86,7 +86,8 @@ class ArticleDetailController: UIViewController {
         
         // кнопка
 //      openInSafariButton.frame = CGRect(x: 0, y: 0, width: 100, height: 50) // задаём фрейм кнопки
-        openInSafariButton.frame = CGRect(x: 150, y: 700, width: 100, height: 50) // задаём фрейм кнопки
+//        openInSafariButton.frame = CGRect(x: 150, y: 700, width: 100, height: 50) // задаём фрейм кнопки
+//      фрейм задавать не нужно, ели используем anchor ниже
         openInSafariButton.backgroundColor = .systemBlue // фон кнопки
         openInSafariButton.setTitleColor(.white, for: .normal) // цвет текста кнопки
         openInSafariButton.setTitle("Full Story", for: .normal) // текст на кнопке
@@ -109,10 +110,7 @@ class ArticleDetailController: UIViewController {
         dateLabel.anchor(top: titleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 20))
         contentLabel.anchor(top: dateLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
         sourceLabel.anchor(top: contentLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
-        //надо вернуть обратно
-//        openInSafariButton.topAnchor.constraint(equalTo: sourceLabel.bottomAnchor).isActive = true
-//        openInSafariButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        openInSafariButton.anchor(top: sourceLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 5, left: 20, bottom: 0, right: 20))
-        
+        openInSafariButton.anchor(top: sourceLabel.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 5, left: 20, bottom: 0, right: 20), size: .init(width: 200, height: 50))
+        openInSafariButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true        
     }
 }
