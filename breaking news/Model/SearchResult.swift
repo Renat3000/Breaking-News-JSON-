@@ -7,6 +7,8 @@
 
 import Foundation
 
+let defaults = UserDefaults.standard
+
 struct SearchResult: Decodable {
     let articles: [Articles]
     let totalResults: Int
@@ -17,11 +19,22 @@ struct Articles: Decodable {
     let url: String
     let urlToImage: String?
     let content: String?
-//  на будущее
     let source: Source
     let publishedAt: String?
     let description: String?
-//    var clickCount: Int?
+    
+    private let clickCountKey = "clickCount "
+    
+    var clickCount: Int {
+        get {
+            let key = clickCountKey + title // Используем уникальный ключ для каждой статьи
+            return UserDefaults.standard.integer(forKey: key)
+        }
+        set {
+            let key = clickCountKey + title // Используем уникальный ключ для каждой статьи
+            UserDefaults.standard.set(newValue, forKey: key)
+        }
+    }
 }
 
 struct Source: Decodable {

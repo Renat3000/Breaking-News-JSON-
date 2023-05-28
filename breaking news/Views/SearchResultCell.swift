@@ -9,6 +9,21 @@ import UIKit
 
 class SearchResultCell: UICollectionViewCell {
     
+    var articles: Articles?
+    var clickCount: Int = 0 {
+        didSet {
+            // Вы можете выполнить здесь необходимые действия с обновленным значением clickCount
+            viewCount.text = "\(clickCount)"
+        }
+    }
+    
+    func configure(with article: Articles) {
+            // Конфигурируйте ячейку с данными из article
+            // Например, установите значение clickCount в метку:
+        articles = article
+        viewCount.text = "\(article.clickCount)"
+    }
+
     let clickIcon: UILabel = {
         let label = UILabel()
         label.text = "👆"

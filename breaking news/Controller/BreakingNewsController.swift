@@ -10,40 +10,24 @@ import UIKit
 private let reuseIdentifier = "Cell"
 class BreakingNewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    var clickCount: Int
     var wikiNoImage = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
-    func viewCountUpdate() -> Int {
-        
-        if clickCount == nil {
-            clickCount = 1
-        } else {
-            clickCount += 1
-        }
-        return clickCount ?? 0
-    }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let number = viewCountUpdate()
-//        print("number is", number)
-        clickCount = number
-//        print("clickCount is", clickCount)
-//        viewCountUpdate()
-//        print(number)
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
-//
-//        cell.clicks = number
         
-        let article = appResults[indexPath.item]
+        var selectedArticle = appResults[indexPath.item]
+            selectedArticle.clickCount += 1 // Увеличиваем clickCount на 1
+//        print(selectedArticle.clickCount) // проверка кликов на вшивость
+        
         let controller = ArticleDetailController()
-        controller.titleLabelText = article.title
-        controller.dateLabelText = article.publishedAt
-        controller.contentLabelText = article.description
-        controller.urlLabelText = article.url
-        controller.sourceLabelText = article.source.name
-        if let imageUrl = URL(string: article.urlToImage ?? wikiNoImage) {
+        controller.titleLabelText = selectedArticle.title
+        controller.dateLabelText = selectedArticle.publishedAt
+        controller.contentLabelText = selectedArticle.description
+        controller.urlLabelText = selectedArticle.url
+        controller.sourceLabelText = selectedArticle.source.name
+        if let imageUrl = URL(string: selectedArticle.urlToImage ?? wikiNoImage) {
         controller.imageViewURL = imageUrl
         }
-        
+        collectionView.reloadItems(at: [indexPath]) // Обновляем ячейку для отображения нового значения clickCount
         collectionView.reloadData()
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -107,28 +91,18 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
-        let appResult = appResults[indexPath.item]
-        if let url = URL(string: appResult.urlToImage ?? wikiNoImage) {
+        let article = appResults[indexPath.item]
+        if let url = URL(string: article.urlToImage ?? wikiNoImage) {
             cell.imageView.load(url: url)
         }
-        cell.headlineLabel.text = appResult.title
-        cell.viewCount.text = "\(clickCount)"
-//        cell.horizontalController.didSelectHandler
-//        self.didSelectHandler = { [weak self] articles in
-//            let controller = ArticleDetailController()
-//            controller.navigationItem.title = articles.title
-////            controller.appId = articles.content
-//            self?.navigationController?.pushViewController(controller, animated: true)
-//        }
+        cell.headlineLabel.text = article.title
+//        cell.articles = article
+        cell.configure(with: article) // Конфигурируем ячейку с данными статьи
         return cell
     }
     
     //чтобы иницализировать легче
-    //        init() {
-    //
-    //        }
-    init(clickCount: Int) {
-        self.clickCount = clickCount
+    init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         
     }
