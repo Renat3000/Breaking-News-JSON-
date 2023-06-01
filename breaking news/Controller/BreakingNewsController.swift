@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import CoreData
 
 private let reuseIdentifier = "Cell"
 class BreakingNewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var wikiNoImage = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    fileprivate var appResults = [Articles]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -50,35 +53,17 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
             
             view.addSubview(activityIndicatorView)
             activityIndicatorView.fillSuperview()
-            fetchNews()
+            fetchJSON()
         }
 
-    fileprivate var appResults = [Articles]()
-    fileprivate func fetchNews(){
-        let urlString = "https://newsapi.org/v2/top-headlines?country=us&apiKey=7ecf375a7380407e9a2ba184b5f39a2f"
-        guard let url = URL(string: urlString) else { return }
-        
-        // fetch data from internet
-        URLSession.shared.dataTask(with: url) { (data, resp, err) in
-            if let err = err {
-                print("failed! here's the error:", err)
-                return
+    fileprivate func fetchJSON(){
+        ServiceJSON.shared.fetchTopNews { (articles) in
+            self.appResults = articles
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+                self.activityIndicatorView.stopAnimating()
             }
-            
-        // if successful
-            guard let data = data else { return }
-            do {
-                let searchResult = try JSONDecoder().decode(SearchResult.self, from: data)
-                self.appResults = searchResult.articles
-//                self.appResults.forEach({print($0.title)})
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    self.activityIndicatorView.stopAnimating()
-                }
-            } catch let jsonErr {
-             print("Failed to decode JSON:", jsonErr)
-            }
-        }.resume() // fire off the request
+        }
     }
         
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -96,7 +81,6 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
             cell.imageView.load(url: url)
         }
         cell.headlineLabel.text = article.title
-//        cell.articles = article
         cell.configure(with: article) // Конфигурируем ячейку с данными статьи
         return cell
     }
@@ -109,4 +93,21 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Model Manupilation Methods
+    
+    func saveItems() {
+        do {
+            try context.save()
+        } catch {
+            print("error saving context \(error)")
+        }
+        
+        collectionView.reloadData()
+    }
+    
+//    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+//        
+//       
+//    }
 }

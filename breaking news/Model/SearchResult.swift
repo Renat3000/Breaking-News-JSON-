@@ -8,9 +8,10 @@
 import Foundation
 
 let defaults = UserDefaults.standard
+let clickCountKey = "clickCount "
 
 struct SearchResult: Decodable {
-    let articles: [Articles]
+    let articles: [Articles] //переделать на [Article]
     let totalResults: Int
 }
 
@@ -23,7 +24,6 @@ struct Articles: Decodable {
     let publishedAt: String?
     let description: String?
     
-    private let clickCountKey = "clickCount "
     
     var clickCount: Int {
         get {

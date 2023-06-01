@@ -37,9 +37,7 @@ class ArticleDetailController: UIViewController {
     
     var sourceLabel = UILabel(text: "source", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
     var dateLabel = UILabel(text: "date", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
-    var titleLabelText: String! {
-        didSet {}
-    }
+    var titleLabelText: String = "" // при инициализации контроллера в конструктор передать мапу с этими значниями (как я до этого делал с clickCount)
     
     var contentLabelText: String! {
         didSet {}
