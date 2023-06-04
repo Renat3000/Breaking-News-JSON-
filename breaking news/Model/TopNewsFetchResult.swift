@@ -10,12 +10,12 @@ import Foundation
 let defaults = UserDefaults.standard
 let clickCountKey = "clickCount "
 
-struct SearchResult: Decodable {
-    let articles: [Articles] //переделать на [Article]
+struct TopNewsFetchResult: Decodable {
+    let articles: [Article] 
     let totalResults: Int
 }
 
-struct Articles: Decodable {
+struct Article: Decodable {
     let title: String
     let url: String
     let urlToImage: String?

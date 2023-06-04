@@ -2,51 +2,17 @@
 //  SearchResultCell.swift
 //  breaking news
 //
-//  Created by Renat Nazyrov on 03.04.2023.
+//  Created by Renat Nazyrov on 03.06.2023.
 //
 
 import UIKit
 
 class SearchResultCell: UICollectionViewCell {
     
-    var articles: Articles?
-    var clickCount: Int = 0 {
-        didSet {
-            // Вы можете выполнить здесь необходимые действия с обновленным значением clickCount
-            viewCount.text = "\(clickCount)"
-        }
-    }
-    
-    func configure(with article: Articles) {
-            // Конфигурируйте ячейку с данными из article
-            // Например, установите значение clickCount в метку:
-        articles = article
-        viewCount.text = "\(article.clickCount)"
-    }
-
-    let clickIcon: UILabel = {
-        let label = UILabel()
-        label.text = "👆"
-        return label
-    }()
-    
-    let viewCount: UILabel! = {
-        let count = UILabel()
-        count.text = "0"
-        count.numberOfLines = 1
-        count.widthAnchor.constraint(equalToConstant: 29).isActive = true
-        return count
-    }()
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-//        iv.backgroundColor = .white
-//        iv.widthAnchor.constraint(equalToConstant: 50).isActive = true
-//        iv.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        //норм
-//        iv.contentMode = UIView.ContentMode.scaleAspectFit
         iv.contentMode = UIView.ContentMode.scaleAspectFill
-//        iv.contentMode = UIView.ContentMode.center
         iv.clipsToBounds = true
         return iv
     }()
@@ -57,31 +23,17 @@ class SearchResultCell: UICollectionViewCell {
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.numberOfLines = 0
         label.setContentCompressionResistancePriority(.required, for: .vertical)
-//        label.sizeToFit()
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let viewCountView = UIStackView(arrangedSubviews: [
-            clickIcon, viewCount
-        ])
-        viewCountView.axis = .vertical
-        
-        let labelStackView = UIStackView(arrangedSubviews: [
-            viewCountView, headlineLabel
-        ])
-        
-        labelStackView.spacing = 10
-//        stackview.alignment = .fill
-//        addSubview(labelStackView)
-        
         let verticalStackView = UIStackView(arrangedSubviews: [
             imageView,
-            labelStackView
+            headlineLabel
         ])
-//        imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
+        
         verticalStackView.axis = .vertical
         verticalStackView.spacing = 12
         addSubview(verticalStackView)

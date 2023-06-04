@@ -13,7 +13,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     
     var wikiNoImage = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    fileprivate var appResults = [Articles]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
+    fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -49,7 +49,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
             super.viewDidLoad()
 //            collectionView.backgroundColor = .systemGreen
             collectionView.backgroundColor = .white
-            collectionView!.register(SearchResultCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+            collectionView!.register(TopNewsCell.self, forCellWithReuseIdentifier: reuseIdentifier)
             
             view.addSubview(activityIndicatorView)
             activityIndicatorView.fillSuperview()
@@ -75,7 +75,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SearchResultCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TopNewsCell
         let article = appResults[indexPath.item]
         if let url = URL(string: article.urlToImage ?? wikiNoImage) {
             cell.imageView.load(url: url)
