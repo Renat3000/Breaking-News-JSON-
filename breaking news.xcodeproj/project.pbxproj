@@ -13,6 +13,7 @@
 		CE49E30E2A1267CF005E7BF5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49E30D2A1267CF005E7BF5 /* Extensions.swift */; };
 		CE49E3102A126938005E7BF5 /* VerticalStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE49E30F2A126938005E7BF5 /* VerticalStackView.swift */; };
 		CE5AA7BD2A24C9D000DFD3D7 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE5AA7BB2A24C9D000DFD3D7 /* DataModel.xcdatamodeld */; };
+		CE6CDF7A2A2CCE85008AAC21 /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6CDF792A2CCE85008AAC21 /* K.swift */; };
 		CE92DE0729DB1B9000CE7D53 /* BarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE92DE0629DB1B9000CE7D53 /* BarController.swift */; };
 		CE92DE0A29DB292B00CE7D53 /* TopNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE92DE0929DB292B00CE7D53 /* TopNewsCell.swift */; };
 		CE9FA7F229F9568900479044 /* UIView and Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9FA7F129F9568900479044 /* UIView and Layout.swift */; };
@@ -33,6 +34,7 @@
 		CE49E30D2A1267CF005E7BF5 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CE49E30F2A126938005E7BF5 /* VerticalStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalStackView.swift; sourceTree = "<group>"; };
 		CE5AA7BC2A24C9D000DFD3D7 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		CE6CDF792A2CCE85008AAC21 /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		CE92DE0629DB1B9000CE7D53 /* BarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarController.swift; sourceTree = "<group>"; };
 		CE92DE0929DB292B00CE7D53 /* TopNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNewsCell.swift; sourceTree = "<group>"; };
 		CE9FA7F129F9568900479044 /* UIView and Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UIView and Layout.swift"; path = "breaking news/UIView and Layout.swift"; sourceTree = SOURCE_ROOT; };
@@ -114,6 +116,7 @@
 				CE49E30D2A1267CF005E7BF5 /* Extensions.swift */,
 				CEA0E7482A29291500FBC43A /* ServiceJSON.swift */,
 				CE49E30F2A126938005E7BF5 /* VerticalStackView.swift */,
+				CE6CDF792A2CCE85008AAC21 /* K.swift */,
 				CE46BB5C29DC64500085E8E9 /* Controller */,
 				CE92DE0829DB28F300CE7D53 /* Views */,
 				CE46BB5B29DC642C0085E8E9 /* Model */,
@@ -207,6 +210,7 @@
 				CE46BB5A29DC61E20085E8E9 /* TopNewsFetchResult.swift in Sources */,
 				CE2BC79529E1CA3A003F36DB /* BreakingNewsController.swift in Sources */,
 				CE5AA7BD2A24C9D000DFD3D7 /* DataModel.xcdatamodeld in Sources */,
+				CE6CDF7A2A2CCE85008AAC21 /* K.swift in Sources */,
 				CE92DE0A29DB292B00CE7D53 /* TopNewsCell.swift in Sources */,
 				CE49E30C2A1260AC005E7BF5 /* ArticleDetailController.swift in Sources */,
 			);

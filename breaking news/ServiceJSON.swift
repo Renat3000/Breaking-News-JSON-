@@ -10,10 +10,6 @@ import Foundation
 class ServiceJSON {
     static let shared = ServiceJSON() //singleton
     
-    //++ сделать отдельный под поиск
-//    var topNewsResults = [Article]()
-//    var newsSearchResults = [SearchArticle]()
-    
     func fetchTopNews(completion: @escaping ([Article])->()) {
         let urlString = "https://newsapi.org/v2/top-headlines?country=us&apiKey=7ecf375a7380407e9a2ba184b5f39a2f"
     

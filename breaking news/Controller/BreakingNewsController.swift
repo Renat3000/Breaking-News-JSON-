@@ -11,7 +11,6 @@ import CoreData
 private let reuseIdentifier = "Cell"
 class BreakingNewsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    var wikiNoImage = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
     
@@ -23,11 +22,11 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         
         let controller = ArticleDetailController()
         controller.titleLabelText = selectedArticle.title
-        controller.dateLabelText = selectedArticle.publishedAt
-        controller.contentLabelText = selectedArticle.description
+        controller.dateLabelText = selectedArticle.publishedAt ?? ""
+        controller.contentLabelText = selectedArticle.description ?? ""
         controller.urlLabelText = selectedArticle.url
         controller.sourceLabelText = selectedArticle.source.name
-        if let imageUrl = URL(string: selectedArticle.urlToImage ?? wikiNoImage) {
+        if let imageUrl = URL(string: selectedArticle.urlToImage ?? K.wikiNoImage) {
         controller.imageViewURL = imageUrl
         }
         collectionView.reloadItems(at: [indexPath]) // Обновляем ячейку для отображения нового значения clickCount
@@ -44,7 +43,6 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         return aiv
     }()
     
-//fileprivate let searchController = UISearchController(searchResultsController: nil)
         override func viewDidLoad() {
             super.viewDidLoad()
 //            collectionView.backgroundColor = .systemGreen
@@ -77,7 +75,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TopNewsCell
         let article = appResults[indexPath.item]
-        if let url = URL(string: article.urlToImage ?? wikiNoImage) {
+        if let url = URL(string: article.urlToImage ?? K.wikiNoImage) {
             cell.imageView.load(url: url)
         }
         cell.headlineLabel.text = article.title

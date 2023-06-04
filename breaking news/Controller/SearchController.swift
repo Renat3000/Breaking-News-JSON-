@@ -25,7 +25,6 @@ fileprivate let searchController = UISearchController(searchResultsController: n
     }
     var timer: Timer?
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print(searchText)
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (_) in
             self.fetchNews(searchTerm: searchText)
@@ -54,7 +53,7 @@ fileprivate let searchController = UISearchController(searchResultsController: n
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifierSearch, for: indexPath) as! SearchResultCell
         let searchResult = searchResults[indexPath.item]
         cell.headlineLabel.text = searchResult.title
-        if let url = URL(string: searchResult.urlToImage ?? "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg") {
+        if let url = URL(string: searchResult.urlToImage ?? K.wikiNoImage) {
             cell.imageView.load(url: url)
         }
         return cell
@@ -68,17 +67,3 @@ fileprivate let searchController = UISearchController(searchResultsController: n
             fatalError("init(coder:) has not been implemented")
         }
     }
-
-extension UIImageView {
-    func load(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                    }
-                }
-            }
-        }
-    }
-}

@@ -10,21 +10,11 @@ import SafariServices
 
 class ArticleDetailController: UIViewController {
     
-// эти комментарии ниже писались, когда это был UICollectionViewController 🥸
-// 6 строк ниже нужно чтобы приложение не крашилось, когда я открываю в didselectitemat в файле BreakingNewsController вот этот наш текущий контроллер. Была вот эта ошибка: UICollectionView must be initialized with a non-nil layout parameter
-//    init() {
-//        super.init(collectionViewLayout: UICollectionViewFlowLayout())
-//    }
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    // дальше все ок, чисто кастомизация и передача данных
-    
     var titleLabel = UILabel(text: "Title", font: .boldSystemFont(ofSize: 22), numberOfLines: 0)
     var contentLabel = UILabel(text: "Content of News", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
     var urlLabel = UILabel(text: "full url", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
     var imageView = UIImageView()
-    var imageViewURL = URL(string: "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg")! {
+    var imageViewURL = URL(string: K.wikiNoImage)! {
         didSet {
             imageView.load(url: imageViewURL)
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,21 +28,10 @@ class ArticleDetailController: UIViewController {
     var sourceLabel = UILabel(text: "source", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
     var dateLabel = UILabel(text: "date", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
     var titleLabelText: String = "" // при инициализации контроллера в конструктор передать мапу с этими значниями (как я до этого делал с clickCount)
-    
-    var contentLabelText: String! {
-        didSet {}
-    }
-    
-    var urlLabelText: String! {
-        didSet {}
-    }
-    
-    var sourceLabelText: String! {
-        didSet {}
-    }
-    var dateLabelText: String! {
-        didSet {}
-    }
+    var contentLabelText: String = ""
+    var urlLabelText: String = ""
+    var sourceLabelText: String = ""
+    var dateLabelText: String = ""
     
     //date format
     func formattedDateTime(from dateString: String) -> String {
@@ -83,8 +62,6 @@ class ArticleDetailController: UIViewController {
         view.backgroundColor = .white
         
         // кнопка
-//      openInSafariButton.frame = CGRect(x: 0, y: 0, width: 100, height: 50) // задаём фрейм кнопки
-//        openInSafariButton.frame = CGRect(x: 150, y: 700, width: 100, height: 50) // задаём фрейм кнопки
 //      фрейм задавать не нужно, ели используем anchor ниже
         openInSafariButton.backgroundColor = .systemBlue // фон кнопки
         openInSafariButton.setTitleColor(.white, for: .normal) // цвет текста кнопки
@@ -94,7 +71,7 @@ class ArticleDetailController: UIViewController {
         titleLabel.text = titleLabelText
         contentLabel.text = contentLabelText
         urlLabel.text = urlLabelText
-        sourceLabel.text = "Source: \(sourceLabelText!)"
+        sourceLabel.text = "Source: \(sourceLabelText)"
         dateLabel.text = formattedDateTime(from: dateLabelText)
 
         view.addSubview(imageView)
