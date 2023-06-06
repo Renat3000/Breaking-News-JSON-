@@ -27,7 +27,7 @@ fileprivate let searchController = UISearchController(searchResultsController: n
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (_) in
-            self.fetchNews(searchTerm: searchText)
+            self.fetchNews(searchTerm: searchText.replacingOccurrences(of: " ", with: "%20"))
         })
     }
     

@@ -42,12 +42,13 @@ class TopNewsCell: UICollectionViewCell {
         let iv = UIImageView()
 //        iv.backgroundColor = .white
 //        iv.widthAnchor.constraint(equalToConstant: 50).isActive = true
-//        iv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        iv.heightAnchor.constraint(equalToConstant: 180).isActive = true
         //норм
 //        iv.contentMode = UIView.ContentMode.scaleAspectFit
         iv.contentMode = UIView.ContentMode.scaleAspectFill
 //        iv.contentMode = UIView.ContentMode.center
         iv.clipsToBounds = true
+        iv.layer.cornerRadius = 10
         return iv
     }()
     
@@ -68,28 +69,29 @@ class TopNewsCell: UICollectionViewCell {
             clickIcon, viewCount
         ])
         viewCountView.axis = .vertical
+        viewCountView.translatesAutoresizingMaskIntoConstraints = false
+        viewCountView.alignment = .center
+        addSubview(viewCountView)
         
         let labelStackView = UIStackView(arrangedSubviews: [
             viewCountView, headlineLabel
         ])
-        
-        labelStackView.spacing = 10
-//        stackview.alignment = .fill
-//        addSubview(labelStackView)
+        labelStackView.axis = .horizontal
+        labelStackView.spacing = 0
+        addSubview(labelStackView)
         
         let verticalStackView = UIStackView(arrangedSubviews: [
             imageView,
             labelStackView
         ])
-//        imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         verticalStackView.axis = .vertical
-        verticalStackView.spacing = 12
+//        verticalStackView.spacing = 0
         addSubview(verticalStackView)
         
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         verticalStackView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
-        verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
+        verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24).isActive = true
+        verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24).isActive = true
         verticalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
     
