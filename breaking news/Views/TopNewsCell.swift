@@ -10,20 +10,13 @@ import UIKit
 class TopNewsCell: UICollectionViewCell {
     
     var articles: Article?
-    var clickCount: Int = 0 {
-        didSet {
-            // Вы можете выполнить здесь необходимые действия с обновленным значением clickCount
-            viewCount.text = "\(clickCount)"
-        }
+    var clickCount: Int = 0
+    
+    func configure(clickCount: Int) {
+//            self.clickCount = clickCount //нахера это нужно было я хз
+        viewCount.text = "\(clickCount)"
     }
     
-    func configure(with article: Article) {
-            // Конфигурируйте ячейку с данными из article
-            // Например, установите значение clickCount в метку:
-        articles = article
-        viewCount.text = "\(article.clickCount)"
-    }
-
     let clickIcon: UILabel = {
         let label = UILabel()
         label.text = "👆"

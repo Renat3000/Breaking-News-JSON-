@@ -7,8 +7,6 @@
 
 import Foundation
 
-let defaults = UserDefaults.standard
-let clickCountKey = "clickCount "
 
 struct TopNewsFetchResult: Decodable {
     let articles: [Article] 
@@ -23,18 +21,6 @@ struct Article: Decodable {
     let source: Source
     let publishedAt: String?
     let description: String?
-    
-    
-    var clickCount: Int {
-        get {
-            let key = clickCountKey + title // Используем уникальный ключ для каждой статьи
-            return UserDefaults.standard.integer(forKey: key)
-        }
-        set {
-            let key = clickCountKey + title // Используем уникальный ключ для каждой статьи
-            UserDefaults.standard.set(newValue, forKey: key)
-        }
-    }
 }
 
 struct Source: Decodable {

@@ -13,12 +13,16 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
+    let defaults = UserDefaults.standard
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        var selectedArticle = appResults[indexPath.item]
-            selectedArticle.clickCount += 1 // Увеличиваем clickCount на 1
-//        print(selectedArticle.clickCount) // проверка кликов на вшивость
+        //смотрим из памяти клики и ув на 1
+        let selectedArticle = appResults[indexPath.item]
+        let clicksFromMemory = defaults.integer(forKey: selectedArticle.title)
+        var clickCount = clicksFromMemory
+        clickCount += 1
+        defaults.setValue(clickCount, forKey: selectedArticle.title)
         
         let controller = ArticleDetailController()
         controller.titleLabelText = selectedArticle.title
@@ -79,7 +83,8 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
             cell.imageView.load(url: url)
         }
         cell.headlineLabel.text = article.title
-        cell.configure(with: article) // Конфигурируем ячейку с данными статьи
+        let clicksFromMemory = defaults.integer(forKey: article.title)
+        cell.configure(clickCount: clicksFromMemory)
         return cell
     }
     
