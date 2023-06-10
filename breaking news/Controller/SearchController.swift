@@ -54,7 +54,7 @@ fileprivate let searchController = UISearchController(searchResultsController: n
         let searchResult = searchResults[indexPath.item]
         cell.headlineLabel.text = searchResult.title
         if let url = URL(string: searchResult.urlToImage ?? K.wikiNoImage) {
-            cell.imageView.load(url: url)
+            cell.imageView.loadImage(url: url)
         }
         return cell
     }

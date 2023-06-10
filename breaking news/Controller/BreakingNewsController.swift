@@ -14,6 +14,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
     let defaults = UserDefaults.standard
+    let refreshControl = UIRefreshControl()
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -31,10 +32,9 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         controller.urlLabelText = selectedArticle.url
         controller.sourceLabelText = selectedArticle.source.name
         if let imageUrl = URL(string: selectedArticle.urlToImage ?? K.wikiNoImage) {
-        controller.imageViewURL = imageUrl
+            controller.imageViewURL = imageUrl
         }
-        collectionView.reloadItems(at: [indexPath]) // Обновляем ячейку для отображения нового значения clickCount
-        collectionView.reloadData()
+        collectionView.reloadItems(at: [indexPath]) // Обновляем ячейку для отображения нового clickCount
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -52,10 +52,11 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
 //            collectionView.backgroundColor = .systemGreen
             collectionView.backgroundColor = .white
             collectionView!.register(TopNewsCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+            collectionView.refreshControl = refreshControl
+            refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged) //что делаем при рефреше
             
-            view.addSubview(activityIndicatorView)
-            activityIndicatorView.fillSuperview()
-            fetchJSON()
+//            view.addSubview(activityIndicatorView) // это и строка ниже - троббер, пока убрал. потому что добабил refreshControl = pull to refresh
+//            activityIndicatorView.fillSuperview()
         }
 
     fileprivate func fetchJSON(){
@@ -73,19 +74,32 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return appResults.count
+        if appResults.count < 20 {
+            return appResults.count
+        } else {
+            return 20
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TopNewsCell
         let article = appResults[indexPath.item]
         if let url = URL(string: article.urlToImage ?? K.wikiNoImage) {
-            cell.imageView.load(url: url)
+            cell.imageView.loadImage(url: url)
         }
         cell.headlineLabel.text = article.title
         let clicksFromMemory = defaults.integer(forKey: article.title)
         cell.configure(clickCount: clicksFromMemory)
         return cell
+    }
+    
+    @objc func refreshData() {
+        // Выполнение обновления данных
+        fetchJSON()
+        // Завершение обновления
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.refreshControl.endRefreshing()
+        }
     }
     
     //чтобы иницализировать легче

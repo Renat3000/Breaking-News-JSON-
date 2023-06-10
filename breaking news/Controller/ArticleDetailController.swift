@@ -16,7 +16,7 @@ class ArticleDetailController: UIViewController {
     var imageView = UIImageView()
     var imageViewURL = URL(string: K.wikiNoImage)! {
         didSet {
-            imageView.load(url: imageViewURL)
+            imageView.loadImage(url: imageViewURL)
             imageView.translatesAutoresizingMaskIntoConstraints = false
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
             imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
