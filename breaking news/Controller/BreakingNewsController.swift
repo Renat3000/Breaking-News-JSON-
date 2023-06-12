@@ -13,17 +13,22 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
-    let defaults = UserDefaults.standard
-    let refreshControl = UIRefreshControl()
+    let refreshControl = UIRefreshControl() //pull to refresh
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         //смотрим из памяти клики и ув на 1
         let selectedArticle = appResults[indexPath.item]
-        let clicksFromMemory = defaults.integer(forKey: selectedArticle.title)
-        var clickCount = clicksFromMemory
-        clickCount += 1
-        defaults.setValue(clickCount, forKey: selectedArticle.title)
+        if let newsArticle = fetchNewsArticle(with: selectedArticle.title) {
+                // Обновляем атрибут "clickCount"
+                newsArticle.clickCount += 1
+                // Сохраняем контекст, чтобы сохранить изменения
+                do {
+                    try context.save()
+                } catch {
+                    print("Failed to update news article: \(error)")
+                }
+            }
         
         let controller = ArticleDetailController()
         controller.titleLabelText = selectedArticle.title
@@ -52,6 +57,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
 //            collectionView.backgroundColor = .systemGreen
             collectionView.backgroundColor = .white
             collectionView!.register(TopNewsCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+            fetchNewsFromCoreData()
             collectionView.refreshControl = refreshControl
             refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged) //что делаем при рефреше
             
@@ -62,9 +68,38 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     fileprivate func fetchJSON(){
         ServiceJSON.shared.fetchTopNews { (articles) in
             self.appResults = articles
+            for article in articles {
+                if let existingArticle = self.fetchNewsArticle(with: article.title) {
+                    // Обновить существующий объект "NewsArticle"
+                    existingArticle.url = article.url
+                    existingArticle.urlToImage = article.urlToImage
+                    existingArticle.sourceName = article.source.name
+                    // existingArticle.clickCount = article.clickCount
+                    existingArticle.content = article.content
+                    existingArticle.newsDescription = article.description
+                    existingArticle.publishedAt = article.publishedAt
+                    existingArticle.title = article.title
+                } else {
+                    let articleInCoreData = NewsArticle(context: self.context)
+                    articleInCoreData.sourceName = article.source.name
+                    // articleInCoreData.clickCount = article.clickCount
+                    articleInCoreData.content = article.content
+                    articleInCoreData.newsDescription = article.description
+                    articleInCoreData.publishedAt = article.publishedAt
+                    articleInCoreData.title = article.title
+                    articleInCoreData.url = article.url
+                    articleInCoreData.urlToImage = article.urlToImage
+                }
+                do {
+                    try self.context.save()
+                } catch {
+                    print("can't save articleInCoreData in CoreData", error)
+                }
+            }
             DispatchQueue.main.async {
+//                self.fetchNewsFromCoreData() //вот тут все крашится
                 self.collectionView.reloadData()
-                self.activityIndicatorView.stopAnimating()
+                // self.activityIndicatorView.stopAnimating() пока удалил троблер
             }
         }
     }
@@ -79,6 +114,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         } else {
             return 20
         }
+//        return context.accessibilityElementCount()
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -88,8 +124,11 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
             cell.imageView.loadImage(url: url)
         }
         cell.headlineLabel.text = article.title
-        let clicksFromMemory = defaults.integer(forKey: article.title)
-        cell.configure(clickCount: clicksFromMemory)
+        if let newsArticle = fetchNewsArticle(with: article.title) {
+            // Обновляем атрибут "clickCount"
+            let clicksFromMemory = newsArticle.clickCount
+            cell.configure(clickCount: Int(clicksFromMemory))
+        }
         return cell
     }
     
@@ -123,8 +162,49 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         collectionView.reloadData()
     }
     
-//    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
-//        
-//       
-//    }
+//    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {}
+    func fetchNewsFromCoreData() {
+        let fetchRequest: NSFetchRequest<NewsArticle> = NewsArticle.fetchRequest()
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            
+            // Преобразование объектов NewsArticle в Article
+            let articles = results.map { newsArticle in
+                return Article(
+                    title: newsArticle.title ?? "",
+                    url: newsArticle.url ?? "",
+                    urlToImage: newsArticle.urlToImage,
+                    content: newsArticle.content,
+                    source: Source(id: newsArticle.sourceID, name: newsArticle.sourceName ?? ""),
+                    publishedAt: newsArticle.publishedAt ?? "",
+                    description: newsArticle.newsDescription ?? ""
+                )
+            }
+
+            appResults = articles // Обновление массива новостей в вашем контроллере
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData() // Обновление интерфейса
+            }
+        } catch let error {
+            print("Error fetching news from Core Data: \(error.localizedDescription)")
+        }
+    }
+
+
+
+    func fetchNewsArticle(with title: String) -> NewsArticle? {
+        let fetchRequest: NSFetchRequest<NewsArticle> = NewsArticle.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "title == %@", title)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            return results.first
+        } catch {
+            print("Failed to fetch news article: \(error)")
+            return nil
+        }
+    }
+
 }
