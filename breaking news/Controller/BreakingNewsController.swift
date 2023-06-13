@@ -14,6 +14,14 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
     let refreshControl = UIRefreshControl() //pull to refresh
+   
+    let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: #selector(trashButtonTapped))
+    
+    @objc func trashButtonTapped() {
+        // Обработка нажатия кнопки
+        print("Trash button tapped") // Отладочный вывод
+        deleteNewsArticles()
+    }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -109,12 +117,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if appResults.count < 20 {
-            return appResults.count
-        } else {
-            return 20
-        }
-//        return context.accessibilityElementCount()
+        return appResults.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -152,17 +155,6 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     
     // MARK: - Model Manupilation Methods
     
-    func saveItems() {
-        do {
-            try context.save()
-        } catch {
-            print("error saving context \(error)")
-        }
-        
-        collectionView.reloadData()
-    }
-    
-//    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {}
     func fetchNewsFromCoreData() {
         let fetchRequest: NSFetchRequest<NewsArticle> = NewsArticle.fetchRequest()
         
@@ -192,8 +184,6 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         }
     }
 
-
-
     func fetchNewsArticle(with title: String) -> NewsArticle? {
         let fetchRequest: NSFetchRequest<NewsArticle> = NewsArticle.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "title == %@", title)
@@ -207,4 +197,25 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         }
     }
 
+    func deleteNewsArticles() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let managedObjectContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<NewsArticle> = NewsArticle.fetchRequest()
+        
+        do {
+            let articles = try managedObjectContext.fetch(fetchRequest)
+            for article in articles {
+                managedObjectContext.delete(article)
+            }
+            
+            try managedObjectContext.save()
+            
+            // Обновление экрана
+            self.appResults.removeAll()
+            self.collectionView.reloadData()
+            
+        } catch let error as NSError {
+            print("Error deleting news articles: \(error.localizedDescription)")
+        }
+    }
 }

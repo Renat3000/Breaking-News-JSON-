@@ -24,6 +24,11 @@ class BarController: UITabBarController {
         viewController.navigationItem.title = title
         navController.tabBarItem.title = title
         
+        // кнопка удаления (trashButton) к BreakingNewsController
+        if let breakingNewsController = viewController as? BreakingNewsController {
+            let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: breakingNewsController, action: #selector(breakingNewsController.trashButtonTapped))
+            breakingNewsController.navigationItem.rightBarButtonItem = trashButton
+        }
         let appearance = UITabBarAppearance()
         appearance.backgroundColor = .white //цвет меню
         tabBar.standardAppearance = appearance
