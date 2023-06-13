@@ -13,30 +13,19 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
-    let refreshControl = UIRefreshControl() //pull to refresh
-   
-    let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: #selector(trashButtonTapped))
-    
-    @objc func trashButtonTapped() {
-        // Обработка нажатия кнопки
-        print("Trash button tapped") // Отладочный вывод
-        deleteNewsArticles()
-    }
+    let refreshControl = UIRefreshControl() // pull to refresh
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         //смотрим из памяти клики и ув на 1
         let selectedArticle = appResults[indexPath.item]
         if let newsArticle = fetchNewsArticle(with: selectedArticle.title) {
-                // Обновляем атрибут "clickCount"
-                newsArticle.clickCount += 1
-                // Сохраняем контекст, чтобы сохранить изменения
-                do {
-                    try context.save()
-                } catch {
-                    print("Failed to update news article: \(error)")
-                }
+            newsArticle.clickCount += 1
+            do {
+                try context.save() // Сохраняем контекст, чтобы сохранить изменения
+            } catch {
+                print("Failed to update news article: \(error)")
             }
+        }
         
         let controller = ArticleDetailController()
         controller.titleLabelText = selectedArticle.title
@@ -47,22 +36,13 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         if let imageUrl = URL(string: selectedArticle.urlToImage ?? K.wikiNoImage) {
             controller.imageViewURL = imageUrl
         }
+        
         collectionView.reloadItems(at: [indexPath]) // Обновляем ячейку для отображения нового clickCount
-        self.navigationController?.pushViewController(controller, animated: true)
+        self.navigationController?.pushViewController(controller, animated: true) // открываем ArticleDetailController()
     }
-    
-    //анимация загрузки (throbber)
-    let activityIndicatorView: UIActivityIndicatorView = {
-        let aiv = UIActivityIndicatorView(style: .large)
-        aiv.color = .black
-        aiv.startAnimating()
-        aiv.hidesWhenStopped = true
-        return aiv
-    }()
     
         override func viewDidLoad() {
             super.viewDidLoad()
-//            collectionView.backgroundColor = .systemGreen
             collectionView.backgroundColor = .white
             collectionView!.register(TopNewsCell.self, forCellWithReuseIdentifier: reuseIdentifier)
             fetchNewsFromCoreData()
@@ -128,22 +108,20 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
         }
         cell.headlineLabel.text = article.title
         if let newsArticle = fetchNewsArticle(with: article.title) {
-            // Обновляем атрибут "clickCount"
-            let clicksFromMemory = newsArticle.clickCount
+            let clicksFromMemory = newsArticle.clickCount // Обновляем атрибут "clickCount"
             cell.configure(clickCount: Int(clicksFromMemory))
         }
         return cell
     }
     
     @objc func refreshData() {
-        // Выполнение обновления данных
-        fetchJSON()
-        // Завершение обновления
+        fetchJSON() // обновляем данные
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.refreshControl.endRefreshing()
+            self.refreshControl.endRefreshing() // Завершаем обновление
         }
     }
     
+    // MARK: - Init
     //чтобы иницализировать легче
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -152,6 +130,23 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Misk (throbber and trashButton function)
+    //анимация загрузки (throbber)
+    let activityIndicatorView: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(style: .large)
+        aiv.color = .black
+        aiv.startAnimating()
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
+    
+    //функция trash кнопки
+    @objc func trashButtonTapped() {
+//        print("Trash button tapped") // Отладочный вывод
+        deleteNewsArticles()
+    }
+    
     
     // MARK: - Model Manupilation Methods
     
@@ -210,7 +205,7 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
             
             try managedObjectContext.save()
             
-            // Обновление экрана
+            // Блок обновления экрана
             self.appResults.removeAll()
             self.collectionView.reloadData()
             
