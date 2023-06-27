@@ -18,15 +18,15 @@ class ArticleDetailController: UIViewController {
         didSet {
             imageView.loadImage(url: imageViewURL)
             imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
-            imageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -30).isActive = true
+            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
+            imageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         }
     }
     
-    var sourceLabel = UILabel(text: "source", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
-    var dateLabel = UILabel(text: "date", font: .boldSystemFont(ofSize: 20), numberOfLines: 0)
+    var sourceLabel = UILabel(text: "source", font: .boldSystemFont(ofSize: 12), numberOfLines: 0)
+    var dateLabel = UILabel(text: "date", font: .boldSystemFont(ofSize: 12), numberOfLines: 0)
     var titleLabelText: String = "" // при инициализации контроллера в конструктор передать мапу с этими значниями (как я до этого делал с clickCount)
     var contentLabelText: String = ""
     var urlLabelText: String = ""
@@ -45,7 +45,7 @@ class ArticleDetailController: UIViewController {
     }
     
     // кнопка на новость
-    var openInSafariButton = UIButton(type: .system) {
+    var openInSafariButton = UIButton(type: .roundedRect) {
         didSet {
             openInSafariButton.translatesAutoresizingMaskIntoConstraints = false
             openInSafariButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -65,15 +65,17 @@ class ArticleDetailController: UIViewController {
 //      фрейм задавать не нужно, ели используем anchor ниже
         openInSafariButton.backgroundColor = .systemBlue // фон кнопки
         openInSafariButton.setTitleColor(.white, for: .normal) // цвет текста кнопки
-        openInSafariButton.setTitle("Full Story", for: .normal) // текст на кнопке
+        openInSafariButton.setTitle("Read Full Story", for: .normal) // текст на кнопке
         openInSafariButton.addTarget(self, action: #selector(SafariButtonPressed), for: .touchUpInside) // добавляем действие при нажатии кнопки
         
         titleLabel.text = titleLabelText
         contentLabel.text = contentLabelText
         urlLabel.text = urlLabelText
-        sourceLabel.text = "Source: \(sourceLabelText)"
+        sourceLabel.text = ", \(sourceLabelText)"
+        sourceLabel.textColor = .systemGray
         dateLabel.text = formattedDateTime(from: dateLabelText)
-
+        dateLabel.textColor = .systemGray
+        
         view.addSubview(imageView)
         view.addSubview(titleLabel)
         view.addSubview(dateLabel)
@@ -81,11 +83,13 @@ class ArticleDetailController: UIViewController {
         view.addSubview(sourceLabel)
         view.addSubview(openInSafariButton)
         
-        titleLabel.anchor(top: imageView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 20))
-        dateLabel.anchor(top: titleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 20, bottom: 0, right: 20))
-        contentLabel.anchor(top: dateLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
-        sourceLabel.anchor(top: contentLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 20, bottom: 0, right: 20))
-        openInSafariButton.anchor(top: sourceLabel.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 5, left: 20, bottom: 0, right: 20), size: .init(width: 200, height: 50))
-        openInSafariButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true        
+        titleLabel.anchor(top: imageView.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 20, bottom: 0, right: 0))
+        dateLabel.anchor(top: titleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: sourceLabel.leadingAnchor, padding: .init(top: 8, left: 20, bottom: 0, right: 0))
+        sourceLabel.anchor(top: titleLabel.bottomAnchor, leading: dateLabel.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 8, left: 0, bottom: 0, right: 0))
+        contentLabel.anchor(top: dateLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 20, bottom: 0, right: 20))
+        openInSafariButton.anchor(top: contentLabel.bottomAnchor, leading: nil, bottom: nil, trailing: nil, padding: .init(top: 20, left: 0, bottom: 0, right: 0), size: CGSize(width: 200, height: 50))
+        openInSafariButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        openInSafariButton.layer.cornerRadius = openInSafariButton.frame.height / 2
+        openInSafariButton.layer.masksToBounds = true
     }
 }

@@ -14,6 +14,9 @@ class BreakingNewsController: UICollectionViewController, UICollectionViewDelega
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     fileprivate var appResults = [Article]() // перенес 👈🏻 сюда наверх, чтобы было лучше видно, сейчас не только в json это использую
     let refreshControl = UIRefreshControl() // pull to refresh
+    // пагинация новостей
+    var currentPage = 1
+    let pageSize = 20
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //смотрим из памяти клики и ув на 1

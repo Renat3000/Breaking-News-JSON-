@@ -40,11 +40,20 @@ class ServiceJSON {
         guard let url = URL(string: urlString) else { return }
         
         // fetch data from internet
-        URLSession.shared.dataTask(with: url) { (data, resp, err) in
-            if let err = err {
-                print("failed! here's the error:", err)
-                return
-            }
+         URLSession.shared.dataTask(with: url) { (data, resp, error) in
+               if let error = error as NSError?, error.domain == NSURLErrorDomain {
+                   if error.code == NSURLErrorNotConnectedToInternet {
+                       // Обработка ошибки отсутствия интернет-соединения
+                       print("Отсутствует интернет-соединение")
+                   } else {
+                       // Обработка других ошибок сети
+                       print("Ошибка сети:", error.localizedDescription)
+                   }
+                   
+                   // Если произошла ошибка сети, передаем пустой массив статей
+                   completion([])
+                   return
+               }
             
         // if successful
             guard let data = data else { return }
