@@ -14,6 +14,7 @@ class SearchResultCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.contentMode = UIView.ContentMode.scaleAspectFill
         iv.clipsToBounds = true
+        iv.layer.cornerRadius = 10
         return iv
     }()
     
@@ -35,7 +36,7 @@ class SearchResultCell: UICollectionViewCell {
         ])
         
         verticalStackView.axis = .vertical
-        verticalStackView.spacing = 12
+        verticalStackView.spacing = 8
         addSubview(verticalStackView)
         
         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -43,6 +44,9 @@ class SearchResultCell: UICollectionViewCell {
         verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8).isActive = true
         verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8).isActive = true
         verticalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
+        verticalStackView.isLayoutMarginsRelativeArrangement = true
+        verticalStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
     }
     
     required init?(coder: NSCoder) {

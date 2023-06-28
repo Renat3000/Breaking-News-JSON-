@@ -82,7 +82,7 @@ class TopNewsCell: UICollectionViewCell {
         headlineLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
         headlineLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
 
-//     the size of the cell is in sizeForItemAt method of BreakingNewsController
+//      the size of the cell is in sizeForItemAt method of BreakingNewsController
     }
     
     required init?(coder: NSCoder) {
