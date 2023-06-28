@@ -13,13 +13,13 @@ class TopNewsCell: UICollectionViewCell {
     var clickCount: Int = 0
     
     func configure(clickCount: Int) {
-//            self.clickCount = clickCount //нахера это нужно было я хз
         viewCount.text = "\(clickCount)"
     }
     
     let clickIcon: UILabel = {
         let label = UILabel()
         label.text = "👆"
+        label.textAlignment = .center
         return label
     }()
     
@@ -27,19 +27,13 @@ class TopNewsCell: UICollectionViewCell {
         let count = UILabel()
         count.text = "0"
         count.numberOfLines = 1
-        count.widthAnchor.constraint(equalToConstant: 29).isActive = true
+        count.textAlignment = .center
         return count
     }()
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-//        iv.backgroundColor = .white
-//        iv.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        iv.heightAnchor.constraint(equalToConstant: 180).isActive = true
-        //норм
-//        iv.contentMode = UIView.ContentMode.scaleAspectFit
         iv.contentMode = UIView.ContentMode.scaleAspectFill
-//        iv.contentMode = UIView.ContentMode.center
         iv.clipsToBounds = true
         iv.layer.cornerRadius = 10
         return iv
@@ -50,42 +44,45 @@ class TopNewsCell: UICollectionViewCell {
         label.text = "Breaking News"
         label.font = UIFont.boldSystemFont(ofSize: 17)
         label.numberOfLines = 0
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
-//        label.sizeToFit()
+        label.textAlignment = .left
+//        label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let viewCountView = UIStackView(arrangedSubviews: [
-            clickIcon, viewCount
-        ])
-        viewCountView.axis = .vertical
-        viewCountView.translatesAutoresizingMaskIntoConstraints = false
-        viewCountView.alignment = .center
-        addSubview(viewCountView)
+        addSubview(clickIcon)
+        addSubview(viewCount)
+        addSubview(imageView)
+        addSubview(headlineLabel)
         
-        let labelStackView = UIStackView(arrangedSubviews: [
-            viewCountView, headlineLabel
-        ])
-        labelStackView.axis = .horizontal
-        labelStackView.spacing = 0
-        addSubview(labelStackView)
+        clickIcon.translatesAutoresizingMaskIntoConstraints = false
+        viewCount.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        headlineLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let verticalStackView = UIStackView(arrangedSubviews: [
-            imageView,
-            labelStackView
-        ])
-        verticalStackView.axis = .vertical
-//        verticalStackView.spacing = 0
-        addSubview(verticalStackView)
+        imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 180).isActive = true
         
-        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
-        verticalStackView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24).isActive = true
-        verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24).isActive = true
-        verticalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        clickIcon.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive = true
+        clickIcon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        clickIcon.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        clickIcon.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        viewCount.topAnchor.constraint(equalTo: clickIcon.bottomAnchor).isActive = true
+        viewCount.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        viewCount.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        viewCount.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        headlineLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8).isActive = true
+        headlineLabel.leadingAnchor.constraint(equalTo: clickIcon.trailingAnchor, constant: 10).isActive = true
+        headlineLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        headlineLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
+
+//     the size of the cell is in sizeForItemAt method of BreakingNewsController
     }
     
     required init?(coder: NSCoder) {
